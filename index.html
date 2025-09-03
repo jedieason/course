@@ -81,6 +81,19 @@
             border-radius: 8px;
             color: white;
         }
+        @keyframes animate-modal-in {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .animate-modal-in {
+            animation: animate-modal-in 0.2s ease-out forwards;
+        }
 
     </style>
 </head>
@@ -89,11 +102,18 @@
     <div class="max-w-7xl mx-auto">
         <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">大三上課表</h1>
         
-        <div class="flex justify-center flex-wrap gap-x-4 gap-y-2 mb-8 text-sm text-gray-600">
-            <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-2" style="background-color: #818db8;"></div><span>正課</span></div>
-            <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-2" style="background-color: #63b179;"></div><span>實驗</span></div>
-            <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-2" style="background-color: #e07a5f;"></div><span>考試</span></div>
-            <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-2" style="background-color: #f2cc8f;"></div><span>其他</span></div>
+        <div class="flex justify-between items-center flex-col sm:flex-row gap-4 mb-8">
+            <div class="flex justify-center sm:justify-start flex-wrap gap-x-4 gap-y-2 text-sm text-gray-600">
+                <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-2" style="background-color: #818db8;"></div><span>正課</span></div>
+                <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-2" style="background-color: #63b179;"></div><span>實驗</span></div>
+                <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-2" style="background-color: #e07a5f;"></div><span>考試</span></div>
+                <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-2" style="background-color: #f2cc8f;"></div><span>其他</span></div>
+            </div>
+            <div>
+                <button id="toggle-weekends" class="px-5 py-2 bg-gray-700 text-white font-semibold rounded-lg shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 transition-all duration-200">
+                    顯示週末
+                </button>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 gap-8 md:gap-12">
@@ -101,7 +121,7 @@
             <!-- September 2025 -->
             <div id="september" class="calendar-card bg-white p-4 sm:p-6 rounded-2xl shadow-md">
                 <h2 class="text-xl sm:text-2xl font-bold text-center mb-4">九月 September</h2>
-                <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 mb-2">
+                <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 mb-2 calendar-header">
                     <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
                 </div>
                 <div class="grid grid-cols-7 gap-1 calendar-grid">
@@ -201,10 +221,10 @@
                 </div>
             </div>
 
-            <!-- Other months follow the same structure -->
+            <!-- October 2025 -->
             <div id="october" class="calendar-card bg-white p-4 sm:p-6 rounded-2xl shadow-md">
                 <h2 class="text-xl sm:text-2xl font-bold text-center mb-4">十月 October</h2>
-                 <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 mb-2">
+                 <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 mb-2 calendar-header">
                     <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
                 </div>
                 <div class="grid grid-cols-7 gap-1 calendar-grid">
@@ -291,7 +311,7 @@
 
             <div id="november" class="calendar-card bg-white p-4 sm:p-6 rounded-2xl shadow-md">
                 <h2 class="text-xl sm:text-2xl font-bold text-center mb-4">十一月 November</h2>
-                <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 mb-2">
+                <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 mb-2 calendar-header">
                     <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
                 </div>
                 <div class="grid grid-cols-7 gap-1 calendar-grid">
@@ -378,7 +398,7 @@
 
             <div id="december" class="calendar-card bg-white p-4 sm:p-6 rounded-2xl shadow-md">
                 <h2 class="text-xl sm:text-2xl font-bold text-center mb-4">十二月 December</h2>
-                <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 mb-2">
+                <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-500 mb-2 calendar-header">
                     <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
                 </div>
                 <div class="grid grid-cols-7 gap-1 calendar-grid">
@@ -452,8 +472,8 @@
     </div>
 
     <!-- Modal -->
-    <div id="event-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-auto p-6 relative animate-modal-in">
+    <div id="event-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-auto p-6 relative">
              <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -468,16 +488,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             // --- Highlight Today's Date ---
             const today = new Date();
-            // Set to 2025 for demonstration purposes as the calendar is for 2025
-            // In a real scenario, you might not need to set the year if it's current
-            const currentYear = 2025; // Hardcoded for this calendar
-            const currentMonth = today.getMonth(); // 0-11
+            const currentYear = 2025; 
+            const currentMonth = today.getMonth();
             const currentDay = today.getDate();
-
             const monthIds = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
             const currentMonthId = monthIds[currentMonth];
             
-            // Only highlight if the calendar for the current year is displayed
             if (today.getFullYear() === currentYear) {
                 const monthElement = document.getElementById(currentMonthId);
                 if (monthElement) {
@@ -491,51 +507,89 @@
                 }
             }
 
-
             // --- Modal Interactivity ---
             const modal = document.getElementById('event-modal');
             const closeModalBtn = document.getElementById('close-modal');
             const modalTitle = document.getElementById('modal-title');
             const modalContent = document.getElementById('modal-content');
-            
             const dayCells = document.querySelectorAll('.calendar-grid > div');
 
             dayCells.forEach(cell => {
-                // Only add click listener if there are events
                 if (cell.querySelector('.event')) {
                     cell.addEventListener('click', function() {
                         const dateNum = this.querySelector('.date-number').textContent;
                         const monthName = this.closest('.calendar-card').querySelector('h2').textContent;
                         
                         modalTitle.textContent = `${monthName} - ${dateNum}日`;
-                        modalContent.innerHTML = ''; // Clear previous content
+                        modalContent.innerHTML = ''; 
 
                         const events = this.querySelectorAll('.event');
                         events.forEach(event => {
                             const eventClone = event.cloneNode(true);
-                            eventClone.className = 'modal-event'; // Apply larger styling
+                            eventClone.className = 'modal-event'; 
                             modalContent.appendChild(eventClone);
                         });
 
                         modal.classList.remove('hidden');
+                        modal.querySelector('div').classList.add('animate-modal-in');
                     });
                 }
             });
 
-            // Function to close the modal
             const closeModal = () => {
                 modal.classList.add('hidden');
+                modal.querySelector('div').classList.remove('animate-modal-in');
             };
 
             closeModalBtn.addEventListener('click', closeModal);
-            // Also close modal by clicking on the background
             modal.addEventListener('click', function(e) {
                 if (e.target === modal) {
                     closeModal();
                 }
             });
+
+            // --- Weekend Toggle Interactivity ---
+            const toggleBtn = document.getElementById('toggle-weekends');
+            const calendarCards = document.querySelectorAll('.calendar-card');
+            let weekendsVisible = false; // Start with weekends hidden
+
+            const updateCalendarView = () => {
+                calendarCards.forEach(card => {
+                    const header = card.querySelector('.calendar-header');
+                    const grid = card.querySelector('.calendar-grid');
+
+                    // Toggle grid columns class
+                    header.classList.toggle('grid-cols-7', weekendsVisible);
+                    header.classList.toggle('grid-cols-5', !weekendsVisible);
+                    grid.classList.toggle('grid-cols-7', weekendsVisible);
+                    grid.classList.toggle('grid-cols-5', !weekendsVisible);
+
+                    // Toggle visibility of weekend headers
+                    header.children[0].classList.toggle('hidden', !weekendsVisible); // Sun
+                    header.children[6].classList.toggle('hidden', !weekendsVisible); // Sat
+
+                    // Toggle visibility of weekend day cells
+                    const days = grid.children;
+                    for (let i = 0; i < days.length; i++) {
+                        // Sunday is the 1st column (index 0), Saturday is the 7th (index 6)
+                        if (i % 7 === 0 || i % 7 === 6) {
+                            days[i].classList.toggle('hidden', !weekendsVisible);
+                        }
+                    }
+                });
+                toggleBtn.textContent = weekendsVisible ? '隱藏週末' : '顯示週末';
+            };
+
+            toggleBtn.addEventListener('click', () => {
+                weekendsVisible = !weekendsVisible;
+                updateCalendarView();
+            });
+
+            // Initialize the view with weekends hidden
+            updateCalendarView();
         });
     </script>
 </body>
 </html>
+
 
