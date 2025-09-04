@@ -11,17 +11,14 @@
     <style>
         body {
             font-family: 'Inter', 'Noto Sans TC', sans-serif;
-            background-color: #f8f9fa;
-        }
-        .calendar-card-container {
-            margin-bottom: 2rem;
+            background-color: #f8f9fa; /* Lighter gray background */
         }
         .calendar-grid > div {
-            min-height: 120px;
+            min-height: 120px; /* Slightly smaller height */
             display: flex;
             flex-direction: column;
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s;
-            border: 1px solid #e9ecef;
+            border: 1px solid #e9ecef; /* Subtle border */
             background-color: #ffffff;
         }
         .calendar-grid > div:hover {
@@ -58,7 +55,7 @@
         .calendar-card {
             animation: fadeIn-up 0.5s ease-in-out forwards;
             opacity: 0;
-            border: 1px solid #dee2e6;
+            border: 1px solid #dee2e6; /* Card border */
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
         @keyframes fadeIn-up {
@@ -73,7 +70,7 @@
         }
 
         .today {
-            border: 2px solid #e03131;
+            border: 2px solid #e03131; /* Red border for today */
             background-color: #fff5f5;
         }
         .modal-event {
@@ -96,423 +93,59 @@
             animation: animate-modal-in 0.2s ease-out forwards;
         }
         
-        /* Color Scheme */
+        /* New Color Scheme */
         .event-lecture { background-color: #e7f5ff; color: #1971c2; border-left-color: #1c7ed6;}
         .event-lab { background-color: #e6fcf5; color: #087f5b; border-left-color: #2f9e44;}
         .event-exam { background-color: #fff5f5; color: #c92a2a; border-left-color: #e03131;}
         .event-other { background-color: #fff9db; color: #e67700; border-left-color: #f59f00;}
-        .event-vacation { background-color: #f3e8ff; color: #7950f2; border-left-color: #845ef7;}
 
     </style>
 </head>
 <body class="text-gray-800 p-4 sm:p-6 md:p-8">
 
     <div class="max-w-7xl mx-auto">
-        <header class="sticky top-0 bg-white/80 backdrop-blur-sm py-4 z-30 mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-2">大三上課表</h1>
-            <p class="text-center text-gray-500 mb-6">114 學年度第 1 學期</p>
-            
-            <div class="flex justify-between items-center flex-col sm:flex-row gap-4 max-w-5xl mx-auto">
-                <div class="flex justify-center sm:justify-start flex-wrap gap-x-4 gap-y-2 text-sm text-gray-600">
-                    <div class="flex items-center"><div class="w-1 h-4 rounded-sm mr-2" style="background-color: #1c7ed6;"></div><span>正課</span></div>
-                    <div class="flex items-center"><div class="w-1 h-4 rounded-sm mr-2" style="background-color: #2f9e44;"></div><span>實驗</span></div>
-                    <div class="flex items-center"><div class="w-1 h-4 rounded-sm mr-2" style="background-color: #e03131;"></div><span>考試</span></div>
-                    <div class="flex items-center"><div class="w-1 h-4 rounded-sm mr-2" style="background-color: #f59f00;"></div><span>其他</span></div>
-                    <div class="flex items-center"><div class="w-1 h-4 rounded-sm mr-2" style="background-color: #845ef7;"></div><span>連假</span></div>
-                </div>
-                <div>
-                    <button id="toggle-weekends" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-semibold rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150">
-                        顯示週末
-                    </button>
-                </div>
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-2">大三上課表</h1>
+        <p class="text-center text-gray-500 mb-6">114 學年度第 1 學期</p>
+        
+        <div class="flex justify-between items-center flex-col sm:flex-row gap-4 mb-8">
+            <div class="flex justify-center sm:justify-start flex-wrap gap-x-4 gap-y-2 text-sm text-gray-600">
+                <div class="flex items-center"><div class="w-1 h-4 rounded-sm mr-2" style="background-color: #1c7ed6;"></div><span>正課</span></div>
+                <div class="flex items-center"><div class="w-1 h-4 rounded-sm mr-2" style="background-color: #2f9e44;"></div><span>實驗</span></div>
+                <div class="flex items-center"><div class="w-1 h-4 rounded-sm mr-2" style="background-color: #e03131;"></div><span>考試</span></div>
+                <div class="flex items-center"><div class="w-1 h-4 rounded-sm mr-2" style="background-color: #f59f00;"></div><span>其他</span></div>
             </div>
-        </header>
+            <div>
+                <button id="toggle-weekends" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-semibold rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150">
+                    顯示週末
+                </button>
+            </div>
+        </div>
 
-        <main>
-            <!-- September 2025 -->
-            <div id="september" class="calendar-card-container">
-                <div class="calendar-card bg-white p-4 sm:p-6 rounded-xl">
-                    <h2 class="text-xl sm:text-2xl font-bold text-center mb-4 text-gray-700">九月 September</h2>
-                    <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-400 mb-2 pb-2 border-b calendar-header">
-                        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
-                    </div>
-                    <div class="grid grid-cols-7 gap-1 calendar-grid">
-                        <div class="text-gray-400 rounded-lg p-2"></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">1</span>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Intro</p><p class="text-xs">08:10-08:25 廖玉琳</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: LM/EM</p><p class="text-xs">08:25-09:00 龔秀妮</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Cell I</p><p class="text-xs">09:10-10:00 黃敏銓</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Orientation</p><p class="text-xs">10:20-12:10 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">2</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Intro</p><p class="text-xs">08:10-08:40 龔秀妮</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Basic terms</p><p class="text-xs">08:40-12:10 謝松蒼</p></div>
-                             <div class="event event-lab"><p class="font-semibold">Anat Lab: Skeletal I</p><p class="text-xs">08:40-12:10 謝松蒼</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Cell II</p><p class="text-xs">13:20-15:10 黃敏銓</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Epithelial</p><p class="text-xs">15:30-17:20 龔秀妮</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">3</span>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Muscular</p><p class="text-xs">13:20-15:10 王淑慧</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Skeletal II</p><p class="text-xs">15:30-17:20 謝松蒼</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">4</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">5</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">6</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">7</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">8</span>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Blood</p><p class="text-xs">08:10-10:00 黃敏銓</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Epithelial</p><p class="text-xs">10:20-12:10 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">9</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Skeletal III</p><p class="text-xs">08:10-10:00 謝松蒼</p></div>
-                            <div class="event event-other"><p class="font-semibold">大體老師訪視輔導</p><p class="text-xs">10:20-12:10 陳彥元</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Embryo: Intro</p><p class="text-xs">13:20-13:30 王淑慧</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Embryo: Germ disc</p><p class="text-xs">13:30-15:10 廖孟琳</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Anat Lab: Skeletal II</p><p class="text-xs">15:30-17:20 謝松蒼</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">10</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Intro</p><p class="text-xs">08:10-08:20 張哲達</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Ion channels</p><p class="text-xs">08:20-12:20 郭鐘金</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Connective</p><p class="text-xs">13:20-15:10 龔秀妮</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Connective</p><p class="text-xs">15:30-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">11</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">12</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Muscle</p><p class="text-xs">13:20-17:20 郭鐘金</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">13</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">14</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">15</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Skeletal IV & V</p><p class="text-xs">08:10-10:00 謝松蒼</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Embryo: Embryonic pd</p><p class="text-xs">10:20-12:10 陳涵英</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">16</span>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Nervous (PNS)</p><p class="text-xs">08:10-10:00 謝松蒼</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Embryo: Placenta</p><p class="text-xs">10:20-12:10 賴達孺</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Cartilage, Bone</p><p class="text-xs">13:20-15:10 王淑慧</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Cartilage</p><p class="text-xs">15:30-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">17</span>
-                             <div class="event event-lecture"><p class="font-semibold">Physio: Heart</p><p class="text-xs">09:10-12:10 李宗玄</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Nervous (CNS)</p><p class="text-xs">13:20-15:10 謝松蒼</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Nervous</p><p class="text-xs">15:30-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">18</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">19</span>
-                             <div class="event event-lecture"><p class="font-semibold">Physio: Heart</p><p class="text-xs">13:20-16:20 李宗玄</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">20</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">21</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">22</span>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Cardiovascular</p><p class="text-xs">08:10-10:00 陳玉伶</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Cardiovascular</p><p class="text-xs">10:20-12:10 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">23</span>
-                            <div class="event event-lab"><p class="font-semibold">Anat Lab: Skeletal III</p><p class="text-xs">10:20-12:10 謝松蒼</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Vascular I</p><p class="text-xs">13:20-15:10 陳玉伶</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Muscular I</p><p class="text-xs">15:30-17:20 李立仁</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">24</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: 心臟電生理</p><p class="text-xs">09:10-11:10 湯志永</p></div>
-                            <div class="event event-exam"><p class="font-semibold">Histo: Quiz(I)</p><p class="text-xs">13:30-14:10 全體教師</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Vascular II</p><p class="text-xs">14:20-17:20 陳玉伶</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">25</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">26</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Clinical ECG</p><p class="text-xs">13:20-15:10 蔡佳醍</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Physio Lab 1</p><p class="text-xs">15:30-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">27</span>
-                            <div class="event event-vacation"><p class="font-semibold">教師節連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">28</span>
-                             <div class="event event-vacation"><p class="font-semibold">教師節連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">29</span>
-                             <div class="event event-vacation"><p class="font-semibold">教師節連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">30</span>
-                            <div class="event event-exam"><p class="font-semibold">Histology Midterm</p><p class="text-xs">08:10-12:10 全體教師</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Muscular II</p><p class="text-xs">13:20-15:10 李立仁</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Nervous I</p><p class="text-xs">15:30-17:20 謝松蒼</p></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="relative">
+            <button id="prev-month-btn" class="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-12 z-20 w-9 h-9 rounded-full bg-white text-gray-500 border border-gray-300 shadow-sm hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <button id="next-month-btn" class="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-12 z-20 w-9 h-9 rounded-full bg-white text-gray-500 border border-gray-300 shadow-sm hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
 
-            <!-- October 2025 -->
-            <div id="october" class="calendar-card-container">
-                <div class="calendar-card bg-white p-4 sm:p-6 rounded-xl">
-                    <h2 class="text-xl sm:text-2xl font-bold text-center mb-4 text-gray-700">十月 October</h2>
-                     <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-400 mb-2 pb-2 border-b calendar-header">
-                        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+            <div id="calendar-container">
+                <!-- Calendar will be dynamically generated here -->
+                 <div class="calendar-card bg-white p-4 sm:p-6 rounded-xl">
+                    <h2 id="calendar-title" class="text-xl sm:text-2xl font-bold text-center mb-4 text-gray-700"></h2>
+                    <div id="calendar-header" class="grid gap-1 text-center font-semibold text-sm text-gray-400 mb-2 pb-2 border-b">
+                        <!-- Header will be dynamically generated here -->
                     </div>
-                    <div class="grid grid-cols-7 gap-1 calendar-grid">
-                        <div class="text-gray-400 rounded-lg p-2"></div><div class="text-gray-400 rounded-lg p-2"></div><div class="text-gray-400 rounded-lg p-2"></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">1</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Circulation</p><p class="text-xs">09:10-12:10 張哲達</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Nervous II</p><p class="text-xs">13:20-15:10 謝松蒼</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Anat Lab: Vascular</p><p class="text-xs">15:30-17:20 陳玉伶</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">2</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">3</span>
-                             <div class="event event-lecture"><p class="font-semibold">Physio: Blood</p><p class="text-xs">13:20-16:20 余佳慧</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">4</span>
-                            <div class="event event-vacation"><p class="font-semibold">中秋節連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">5</span>
-                             <div class="event event-vacation"><p class="font-semibold">中秋節連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">6</span>
-                             <div class="event event-vacation"><p class="font-semibold">中秋節連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">7</span>
-                            <div class="event event-exam"><p class="font-semibold">Anatomy Midterm</p><p class="text-xs">08:10-10:00 全體教師</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Integumentary</p><p class="text-xs">13:20-15:10 龔秀妮</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Integumentary</p><p class="text-xs">15:30-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">8</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Circulation</p><p class="text-xs">09:10-12:10 張哲達</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Embryo: Integumentary</p><p class="text-xs">13:20-14:10 王淑慧</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Back & Deep Muscles</p><p class="text-xs">14:20-17:20 龔秀妮</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">9</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">10</span>
-                            <div class="event event-vacation"><p class="font-semibold">國慶日連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">11</span>
-                            <div class="event event-vacation"><p class="font-semibold">國慶日連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">12</span>
-                             <div class="event event-vacation"><p class="font-semibold">國慶日連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">13</span>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Respiratory</p><p class="text-xs">08:10-10:00 陳玉伶</p></div>
-                            <div class="event event-other"><p class="font-semibold">Anat: Lab safety</p><p class="text-xs">09:10-10:00 葉啟娟</p></div>
-                            <div class="event event-other"><p class="font-semibold">大體老師啟用儀式預演</p><p class="text-xs">10:20-12:10 全體教師</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Respiratory</p><p class="text-xs">10:20-12:10 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">14</span>
-                            <div class="event event-lecture"><p class="font-semibold">Embryo: Skeletal/muscular</p><p class="text-xs">08:10-10:00 李立仁</p></div>
-                            <div class="event event-other"><p class="font-semibold">Anat: Lab orientation</p><p class="text-xs">10:20-11:00 陳昱志</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Back & Deep Muscles</p><p class="text-xs">11:00-17:20 龔秀妮</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">15</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Circulation</p><p class="text-xs">09:10-11:10 張哲達</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Vascular research</p><p class="text-xs">11:20-12:10 張哲達</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Pectoral & Axilla I</p><p class="text-xs">13:20-17:20 黃敏銓</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">16</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">17</span>
-                            <div class="event event-lab"><p class="font-semibold">Physio Lab 3</p><p class="text-xs">13:20-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">18</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">19</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">20</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">21</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Pectoral & Axilla II</p><p class="text-xs">08:10-12:10 黃敏銓</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Scapular/Arm I</p><p class="text-xs">13:20-17:20 黃敏銓</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">22</span>
-                            <div class="event event-exam"><p class="font-semibold">Physiology Midterm</p><p class="text-xs">10:20-12:00 全體教師</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Forearm/Scapular II</p><p class="text-xs">13:30-17:20 黃敏銓</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">23</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">24</span>
-                            <div class="event event-vacation"><p class="font-semibold">光復節連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">25</span>
-                            <div class="event event-vacation"><p class="font-semibold">光復節連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">26</span>
-                            <div class="event event-vacation"><p class="font-semibold">光復節連假</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">27</span>
-                             <div class="event event-lecture"><p class="font-semibold">Anat: Forearm</p><p class="text-xs">08:10-12:10 黃敏銓</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">28</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Hand I</p><p class="text-xs">08:10-12:10 黃敏銓</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Hand II + review</p><p class="text-xs">13:30-17:20 黃敏銓</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">29</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Respiration</p><p class="text-xs">09:10-12:10 賴亮全</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Thoracic wall & Lungs</p><p class="text-xs">13:20-15:10 李立仁</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Embryo: Respiratory</p><p class="text-xs">15:30-17:20 陳玉伶</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">30</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">31</span>
-                            <div class="event event-lab"><p class="font-semibold">Physio Lab 4-1</p><p class="text-xs">12:30-17:20 全體教師</p></div>
-                        </div>
+                    <div id="calendar-grid" class="grid gap-1">
+                        <!-- Grid will be dynamically generated here -->
                     </div>
                 </div>
             </div>
-
-            <!-- November 2025 -->
-            <div id="november" class="calendar-card-container">
-                <div class="calendar-card bg-white p-4 sm:p-6 rounded-xl">
-                    <h2 class="text-xl sm:text-2xl font-bold text-center mb-4 text-gray-700">十一月 November</h2>
-                    <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-400 mb-2 pb-2 border-b calendar-header">
-                        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
-                    </div>
-                    <div class="grid grid-cols-7 gap-1 calendar-grid">
-                        <div class="text-gray-400 rounded-lg p-2"></div><div class="text-gray-400 rounded-lg p-2"></div><div class="text-gray-400 rounded-lg p-2"></div><div class="text-gray-400 rounded-lg p-2"></div><div class="text-gray-400 rounded-lg p-2"></div><div class="text-gray-400 rounded-lg p-2"></div>
-                        <div class="rounded-lg p-2"><span class="date-number">1</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">2</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">3</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Joints of shoulder</p><p class="text-xs">08:10-10:00 曾國藩</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Middle mediastinum</p><p class="text-xs">10:20-12:10 李立仁</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">4</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Clinical</p><p class="text-xs">08:10-09:00 謝榮賢</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Sup. & Post. mediastinum</p><p class="text-xs">09:10-15:10 李立仁</p></div>
-                            <div class="event event-other"><p class="font-semibold">Anat: REVIEW</p><p class="text-xs">15:30-17:20</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">5</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Respiration</p><p class="text-xs">09:10-12:10 賴亮全</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Lymph Node</p><p class="text-xs">13:20-15:10 許書睿</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Lymph Node</p><p class="text-xs">15:30-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">6</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">7</span>
-                             <div class="event event-lab"><p class="font-semibold">Physio Lab 4-2</p><p class="text-xs">12:30-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">8</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">9</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">10</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Ant. abdominal wall I</p><p class="text-xs">08:10-12:10 賴達孺</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">11</span>
-                             <div class="event event-lecture"><p class="font-semibold">Histo: Spleen, Tonsil</p><p class="text-xs">08:10-10:00 許書睿</p></div>
-                             <div class="event event-lab"><p class="font-semibold">Histo Lab: Spleen</p><p class="text-xs">10:20-12:10 全體教師</p></div>
-                             <div class="event event-lecture"><p class="font-semibold">Embryo: Cardiovascular I</p><p class="text-xs">13:20-15:10 黃敏銓</p></div>
-                             <div class="event event-lecture"><p class="font-semibold">Anat: Ant. abdominal wall</p><p class="text-xs">15:30-17:20 賴達孺</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">12</span>
-                             <div class="event event-lecture"><p class="font-semibold">Physio: Respiration</p><p class="text-xs">09:10-10:00 賴亮全</p></div>
-                             <div class="event event-lab"><p class="font-semibold">Physio Lab 5</p><p class="text-xs">10:20-11:10 賴亮全</p></div>
-                             <div class="event event-lecture"><p class="font-semibold">Embryo: Cardiovascular II</p><p class="text-xs">13:20-15:10 黃敏銓</p></div>
-                             <div class="event event-lecture"><p class="font-semibold">Anat: Abdominal cavity</p><p class="text-xs">15:30-17:20 賴達孺</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">13</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">14</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">15</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">16</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">17</span>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Oral cavity</p><p class="text-xs">08:10-10:00 廖玉琳</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Oral cavity</p><p class="text-xs">10:20-12:10 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">18</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Abdominal cavity</p><p class="text-xs">08:10-12:10 賴達孺</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Exam of viscera</p><p class="text-xs">13:20-17:20 賴達孺</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">19</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Digestion</p><p class="text-xs">09:10-12:10 余佳慧</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Salivary gland</p><p class="text-xs">13:20-15:10 王淑慧</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Salivary gland</p><p class="text-xs">15:30-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">20</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">21</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">22</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">23</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">24</span>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Intestine</p><p class="text-xs">08:10-10:00 陳玉伶</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Liver & Gall</p><p class="text-xs">10:20-12:10 許書睿</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">25</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Kidney</p><p class="text-xs">08:10-12:10 張毓翰</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Post. abdominal wall</p><p class="text-xs">13:20-17:20 王派惠</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">26</span>
-                             <div class="event event-lecture"><p class="font-semibold">Physio: Digestion</p><p class="text-xs">09:10-12:10 余佳慧</p></div>
-                             <div class="event event-lecture"><p class="font-semibold">Anat: Gluteal region</p><p class="text-xs">13:20-15:10 陳玉伶</p></div>
-                             <div class="event event-lab"><p class="font-semibold">Histo Lab: Liver, Intestine</p><p class="text-xs">15:30-17:20 陳玉伶,許書睿</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">27</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">28</span>
-                            <div class="event event-lab"><p class="font-semibold">Physio Lab 6</p><p class="text-xs">13:20-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">29</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">30</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- December 2025 -->
-            <div id="december" class="calendar-card-container">
-                <div class="calendar-card bg-white p-4 sm:p-6 rounded-xl">
-                    <h2 class="text-xl sm:text-2xl font-bold text-center mb-4 text-gray-700">十二月 December</h2>
-                    <div class="grid grid-cols-7 gap-1 text-center font-semibold text-sm text-gray-400 mb-2 pb-2 border-b calendar-header">
-                        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
-                    </div>
-                    <div class="grid grid-cols-7 gap-1 calendar-grid">
-                        <div class="text-gray-400 rounded-lg p-2"></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">1</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Gluteal region</p><p class="text-xs">08:10-12:20 陳玉伶</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">2</span>
-                            <div class="event event-lecture"><p class="font-semibold">Histo: Kidney</p><p class="text-xs">08:10-10:00 廖玉琳</p></div>
-                            <div class="event event-lab"><p class="font-semibold">Histo Lab: Kidney</p><p class="text-xs">10:20-12:10 全體教師</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Blood vessels of pelvis</p><p class="text-xs">13:20-17:20 陳玉伶</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">3</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Kidney</p><p class="text-xs">09:10-12:10 林水龍</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Pelvic viscera</p><p class="text-xs">13:20-17:20 陳玉伶</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">4</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">5</span>
-                            <div class="event event-lab"><p class="font-semibold">Physio Lab 7-1</p><p class="text-xs">12:30-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">6</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">7</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">8</span>
-                            <div class="event event-exam"><p class="font-semibold">Histo: Quiz(II)</p><p class="text-xs">08:10-08:40 全體教師</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Clinical Rectal Cancer</p><p class="text-xs">09:10-10:00 梁金銅</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Embryo: Digestive System</p><p class="text-xs">10:20-12:10 賴達孺</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">9</span>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Perineum</p><p class="text-xs">08:10-12:20 呂俊宏</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Pelvis & Perineum</p><p class="text-xs">13:20-17:20 呂俊宏</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">10</span>
-                            <div class="event event-lecture"><p class="font-semibold">Physio: Kidney</p><p class="text-xs">09:10-12:10 林水龍</p></div>
-                            <div class="event event-lecture"><p class="font-semibold">Anat: Pelvis & Perineum</p><p class="text-xs">13:20-15:10 呂俊宏</p></div>
-                            <div class="event event-other"><p class="font-semibold">Anat: LAB REVIEW</p><p class="text-xs">15:30-17:20</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">11</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">12</span>
-                            <div class="event event-lab"><p class="font-semibold">Physio Lab 7-2</p><p class="text-xs">12:30-17:20 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">13</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">14</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">15</span>
-                             <div class="event event-exam"><p class="font-semibold">Histology Final Exam</p><p class="text-xs">08:10-12:10 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">16</span>
-                             <div class="event event-exam"><p class="font-semibold">Anatomy Final Exam</p><p class="text-xs">08:10-12:10 全體教師</p></div>
-                             <div class="event event-exam"><p class="font-semibold">Embryo: Final Exam</p><p class="text-xs">13:30-14:50 全體教師</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">17</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">18</span></div>
-                        <div class="rounded-lg p-2 cursor-pointer"><span class="date-number">19</span>
-                            <div class="event event-exam"><p class="font-semibold">Physio: 正課、實驗期末考</p><p class="text-xs">13:20-16:00</p></div>
-                        </div>
-                        <div class="rounded-lg p-2"><span class="date-number">20</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">21</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">22</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">23</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">24</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">25</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">26</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">27</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">28</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">29</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">30</span></div>
-                        <div class="rounded-lg p-2"><span class="date-number">31</span></div>
-                    </div>
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
 
     <!-- Modal -->
@@ -530,63 +163,193 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- Highlight Today's Date ---
-            const today = new Date();
-            const currentYear = 2025; 
-            const currentMonth = today.getMonth(); // 0-11
-            const currentDay = today.getDate();
-            const monthIds = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
             
-            const highlightToday = () => {
-                // Clear previous today marker
-                 document.querySelectorAll('.today').forEach(el => el.classList.remove('today'));
-                
-                if (today.getFullYear() === currentYear) {
-                    const currentMonthId = monthIds[currentMonth];
-                    const monthContainer = document.getElementById(currentMonthId);
-                    if (monthContainer) {
-                        const dayElements = monthContainer.querySelectorAll('.calendar-grid > div');
-                        dayElements.forEach(dayEl => {
-                            const dateNumberEl = dayEl.querySelector('.date-number');
-                            if (dateNumberEl && parseInt(dateNumberEl.textContent) === currentDay) {
-                                dayEl.classList.add('today');
-                            }
-                        });
-                    }
-                }
+            const eventsData = {
+                '2025-09-01': [{ type: 'lecture', title: 'Histo: Intro', time: '08:10-08:25', instructor: '廖玉琳' }, { type: 'lecture', title: 'Histo: LM/EM', time: '08:25-09:00', instructor: '龔秀妮' }, { type: 'lecture', title: 'Histo: Cell I', time: '09:10-10:00', instructor: '黃敏銓' }, { type: 'lab', title: 'Histo Lab: Orientation', time: '10:20-12:10', instructor: '全體教師' }],
+                '2025-09-02': [{ type: 'lecture', title: 'Anat: Intro', time: '08:10-08:40', instructor: '龔秀妮' }, { type: 'lecture', title: 'Anat: Basic terms', time: '08:40-12:10', instructor: '謝松蒼' }, { type: 'lab', title: 'Anat Lab: Skeletal I', time: '08:40-12:10', instructor: '謝松蒼' }, { type: 'lecture', title: 'Histo: Cell II', time: '13:20-15:10', instructor: '黃敏銓' }, { type: 'lecture', title: 'Histo: Epithelial', time: '15:30-17:20', instructor: '龔秀妮' }],
+                '2025-09-03': [{ type: 'lecture', title: 'Histo: Muscular', time: '13:20-15:10', instructor: '王淑慧' }, { type: 'lecture', title: 'Anat: Skeletal II', time: '15:30-17:20', instructor: '謝松蒼' }],
+                '2025-09-08': [{ type: 'lecture', title: 'Histo: Blood', time: '08:10-10:00', instructor: '黃敏銓' }, { type: 'lab', title: 'Histo Lab: Epithelial', time: '10:20-12:10', instructor: '全體教師' }],
+                '2025-09-09': [{ type: 'lecture', title: 'Anat: Skeletal III', time: '08:10-10:00', instructor: '謝松蒼' }, { type: 'other', title: '大體老師訪視輔導', time: '10:20-12:10', instructor: '陳彥元' }, { type: 'lecture', title: 'Embryo: Intro', time: '13:20-13:30', instructor: '王淑慧' }, { type: 'lecture', title: 'Embryo: Germ disc', time: '13:30-15:10', instructor: '廖孟琳' }, { type: 'lab', title: 'Anat Lab: Skeletal II', time: '15:30-17:20', instructor: '謝松蒼' }],
+                '2025-09-10': [{ type: 'lecture', title: 'Physio: Intro', time: '08:10-08:20', instructor: '張哲達' }, { type: 'lecture', title: 'Physio: Ion channels', time: '08:20-12:20', instructor: '郭鐘金' }, { type: 'lecture', title: 'Histo: Connective', time: '13:20-15:10', instructor: '龔秀妮' }, { type: 'lab', title: 'Histo Lab: Connective', time: '15:30-17:20', instructor: '全體教師' }],
+                '2025-09-12': [{ type: 'lecture', title: 'Physio: Muscle', time: '13:20-17:20', instructor: '郭鐘金' }],
+                '2025-09-15': [{ type: 'lecture', title: 'Anat: Skeletal IV & V', time: '08:10-10:00', instructor: '謝松蒼' }, { type: 'lecture', title: 'Embryo: Embryonic pd', time: '10:20-12:10', instructor: '陳涵英' }],
+                '2025-09-16': [{ type: 'lecture', title: 'Histo: Nervous (PNS)', time: '08:10-10:00', instructor: '謝松蒼' }, { type: 'lecture', title: 'Embryo: Placenta', time: '10:20-12:10', instructor: '賴達孺' }, { type: 'lecture', title: 'Histo: Cartilage, Bone', time: '13:20-15:10', instructor: '王淑慧' }, { type: 'lab', title: 'Histo Lab: Cartilage', time: '15:30-17:20', instructor: '全體教師' }],
+                '2025-09-17': [{ type: 'lecture', title: 'Physio: Heart', time: '09:10-12:10', instructor: '李宗玄' }, { type: 'lecture', title: 'Histo: Nervous (CNS)', time: '13:20-15:10', instructor: '謝松蒼' }, { type: 'lab', title: 'Histo Lab: Nervous', time: '15:30-17:20', instructor: '全體教師' }],
+                '2025-09-19': [{ type: 'lecture', title: 'Physio: Heart', time: '13:20-16:20', instructor: '李宗玄' }],
+                '2025-09-22': [{ type: 'lecture', title: 'Histo: Cardiovascular', time: '08:10-10:00', instructor: '陳玉伶' }, { type: 'lab', title: 'Histo Lab: Cardiovascular', time: '10:20-12:10', instructor: '全體教師' }],
+                '2025-09-23': [{ type: 'lab', title: 'Anat Lab: Skeletal III', time: '10:20-12:10', instructor: '謝松蒼' }, { type: 'lecture', title: 'Anat: Vascular I', time: '13:20-15:10', instructor: '陳玉伶' }, { type: 'lecture', title: 'Anat: Muscular I', time: '15:30-17:20', instructor: '李立仁' }],
+                '2025-09-24': [{ type: 'lecture', title: 'Physio: 心臟電生理', time: '09:10-11:10', instructor: '湯志永' }, { type: 'exam', title: 'Histo: Quiz(I)', time: '13:30-14:10', instructor: '全體教師' }, { type: 'lecture', title: 'Anat: Vascular II', time: '14:20-17:20', instructor: '陳玉伶' }],
+                '2025-09-26': [{ type: 'lecture', title: 'Physio: Clinical ECG', time: '13:20-15:10', instructor: '蔡佳醍' }, { type: 'lab', title: 'Physio Lab 1', time: '15:30-17:20', instructor: '全體教師' }],
+                '2025-09-27': [{ type: 'other', title: '教師節連假 ⭐️'}],
+                '2025-09-28': [{ type: 'other', title: '教師節連假 ⭐️'}],
+                '2025-09-29': [{ type: 'other', title: '教師節連假 ⭐️'}],
+                '2025-09-30': [{ type: 'exam', title: 'Histology Midterm', time: '08:10-12:10', instructor: '全體教師' }, { type: 'lecture', title: 'Anat: Muscular II', time: '13:20-15:10', instructor: '李立仁' }, { type: 'lecture', title: 'Anat: Nervous I', time: '15:30-17:20', instructor: '謝松蒼' }],
+                '2025-10-01': [{ type: 'lecture', title: 'Physio: Circulation', time: '09:10-12:10', instructor: '張哲達' }, { type: 'lecture', title: 'Anat: Nervous II', time: '13:20-15:10', instructor: '謝松蒼' }, { type: 'lab', title: 'Anat Lab: Vascular', time: '15:30-17:20', instructor: '陳玉伶' }],
+                '2025-10-03': [{ type: 'lecture', title: 'Physio: Blood', time: '13:20-16:20', instructor: '余佳慧' }],
+                '2025-10-04': [{ type: 'other', title: '中秋節連假 ⭐️'}],
+                '2025-10-05': [{ type: 'other', title: '中秋節連假 ⭐️'}],
+                '2025-10-06': [{ type: 'other', title: '中秋節連假 ⭐️'}],
+                '2025-10-07': [{ type: 'exam', title: 'Anatomy Midterm', time: '08:10-10:00', instructor: '全體教師' }, { type: 'lecture', title: 'Histo: Integumentary', time: '13:20-15:10', instructor: '龔秀妮' }, { type: 'lab', title: 'Histo Lab: Integumentary', time: '15:30-17:20', instructor: '全體教師' }],
+                '2025-10-08': [{ type: 'lecture', title: 'Physio: Circulation', time: '09:10-12:10', instructor: '張哲達' }, { type: 'lecture', title: 'Embryo: Integumentary', time: '13:20-14:10', instructor: '王淑慧' }, { type: 'lecture', title: 'Anat: Back & Deep Muscles', time: '14:20-17:20', instructor: '龔秀妮' }],
+                '2025-10-10': [{ type: 'other', title: '國慶日連假 ⭐️'}],
+                '2025-10-11': [{ type: 'other', title: '國慶日連假 ⭐️'}],
+                '2025-10-12': [{ type: 'other', title: '國慶日連假 ⭐️'}],
+                '2025-10-13': [{ type: 'lecture', title: 'Histo: Respiratory', time: '08:10-10:00', instructor: '陳玉伶' }, { type: 'other', title: 'Anat: Lab safety', time: '09:10-10:00', instructor: '葉啟娟' }, { type: 'other', title: '大體老師啟用儀式預演', time: '10:20-12:10', instructor: '全體教師' }, { type: 'lab', title: 'Histo Lab: Respiratory', time: '10:20-12:10', instructor: '全體教師' }],
+                '2025-10-14': [{ type: 'lecture', title: 'Embryo: Skeletal/muscular', time: '08:10-10:00', instructor: '李立仁' }, { type: 'other', title: 'Anat: Lab orientation', time: '10:20-11:00', instructor: '陳昱志' }, { type: 'lecture', title: 'Anat: Back & Deep Muscles', time: '11:00-17:20', instructor: '龔秀妮' }],
+                '2025-10-15': [{ type: 'lecture', title: 'Physio: Circulation', time: '09:10-11:10', instructor: '張哲達' }, { type: 'lecture', title: 'Physio: Vascular research', time: '11:20-12:10', instructor: '張哲達' }, { type: 'lecture', title: 'Anat: Pectoral & Axilla I', time: '13:20-17:20', instructor: '黃敏銓' }],
+                '2025-10-17': [{ type: 'lab', title: 'Physio Lab 3', time: '13:20-17:20', instructor: '全體教師' }],
+                '2025-10-21': [{ type: 'lecture', title: 'Anat: Pectoral & Axilla II', time: '08:10-12:10', instructor: '黃敏銓' }, { type: 'lecture', title: 'Anat: Scapular/Arm I', time: '13:20-17:20', instructor: '黃敏銓' }],
+                '2025-10-22': [{ type: 'exam', title: 'Physiology Midterm', time: '10:20-12:00', instructor: '全體教師' }, { type: 'lecture', title: 'Anat: Forearm/Scapular II', time: '13:30-17:20', instructor: '黃敏銓' }],
+                '2025-10-24': [{ type: 'other', title: '光復節連假 ⭐️'}],
+                '2025-10-25': [{ type: 'other', title: '光復節連假 ⭐️'}],
+                '2025-10-26': [{ type: 'other', title: '光復節連假 ⭐️'}],
+                '2025-10-27': [{ type: 'lecture', title: 'Anat: Forearm', time: '08:10-12:10', instructor: '黃敏銓' }],
+                '2025-10-28': [{ type: 'lecture', title: 'Anat: Hand I', time: '08:10-12:10', instructor: '黃敏銓' }, { type: 'lecture', title: 'Anat: Hand II + review', time: '13:30-17:20', instructor: '黃敏銓' }],
+                '2025-10-29': [{ type: 'lecture', title: 'Physio: Respiration', time: '09:10-12:10', instructor: '賴亮全' }, { type: 'lecture', title: 'Anat: Thoracic wall & Lungs', time: '13:20-15:10', instructor: '李立仁' }, { type: 'lecture', title: 'Embryo: Respiratory', time: '15:30-17:20', instructor: '陳玉伶' }],
+                '2025-10-31': [{ type: 'lab', title: 'Physio Lab 4-1', time: '12:30-17:20', instructor: '全體教師' }],
+                '2025-11-03': [{ type: 'lecture', title: 'Anat: Joints of shoulder', time: '08:10-10:00', instructor: '曾國藩' }, { type: 'lecture', title: 'Anat: Middle mediastinum', time: '10:20-12:10', instructor: '李立仁' }],
+                '2025-11-04': [{ type: 'lecture', title: 'Anat: Clinical', time: '08:10-09:00', instructor: '謝榮賢' }, { type: 'lecture', title: 'Anat: Sup. & Post. mediastinum', time: '09:10-15:10', instructor: '李立仁' }, { type: 'other', title: 'Anat: REVIEW', time: '15:30-17:20' }],
+                '2025-11-05': [{ type: 'lecture', title: 'Physio: Respiration', time: '09:10-12:10', instructor: '賴亮全' }, { type: 'lecture', title: 'Histo: Lymph Node', time: '13:20-15:10', instructor: '許書睿' }, { type: 'lab', title: 'Histo Lab: Lymph Node', time: '15:30-17:20', instructor: '全體教師' }],
+                '2025-11-07': [{ type: 'lab', title: 'Physio Lab 4-2', time: '12:30-17:20', instructor: '全體教師' }],
+                '2025-11-10': [{ type: 'lecture', title: 'Anat: Ant. abdominal wall I', time: '08:10-12:10', instructor: '賴達孺' }],
+                '2025-11-11': [{ type: 'lecture', title: 'Histo: Spleen, Tonsil', time: '08:10-10:00', instructor: '許書睿' }, { type: 'lab', title: 'Histo Lab: Spleen', time: '10:20-12:10', instructor: '全體教師' }, { type: 'lecture', title: 'Embryo: Cardiovascular I', time: '13:20-15:10', instructor: '黃敏銓' }, { type: 'lecture', title: 'Anat: Ant. abdominal wall', time: '15:30-17:20', instructor: '賴達孺' }],
+                '2025-11-12': [{ type: 'lecture', title: 'Physio: Respiration', time: '09:10-10:00', instructor: '賴亮全' }, { type: 'lab', title: 'Physio Lab 5', time: '10:20-11:10', instructor: '賴亮全' }, { type: 'lecture', title: 'Embryo: Cardiovascular II', time: '13:20-15:10', instructor: '黃敏銓' }, { type: 'lecture', title: 'Anat: Abdominal cavity', time: '15:30-17:20', instructor: '賴達孺' }],
+                '2025-11-17': [{ type: 'lecture', title: 'Histo: Oral cavity', time: '08:10-10:00', instructor: '廖玉琳' }, { type: 'lab', title: 'Histo Lab: Oral cavity', time: '10:20-12:10', instructor: '全體教師' }],
+                '2025-11-18': [{ type: 'lecture', title: 'Anat: Abdominal cavity', time: '08:10-12:10', instructor: '賴達孺' }, { type: 'lecture', title: 'Anat: Exam of viscera', time: '13:20-17:20', instructor: '賴達孺' }],
+                '2025-11-19': [{ type: 'lecture', title: 'Physio: Digestion', time: '09:10-12:10', instructor: '余佳慧' }, { type: 'lecture', title: 'Histo: Salivary gland', time: '13:20-15:10', instructor: '王淑慧' }, { type: 'lab', title: 'Histo Lab: Salivary gland', time: '15:30-17:20', instructor: '全體教師' }],
+                '2025-11-24': [{ type: 'lecture', title: 'Histo: Intestine', time: '08:10-10:00', instructor: '陳玉伶' }, { type: 'lab', title: 'Histo Lab: Liver & Gall', time: '10:20-12:10', instructor: '許書睿' }],
+                '2025-11-25': [{ type: 'lecture', title: 'Anat: Kidney', time: '08:10-12:10', instructor: '張毓翰' }, { type: 'lecture', title: 'Anat: Post. abdominal wall', time: '13:20-17:20', instructor: '王派惠' }],
+                '2025-11-26': [{ type: 'lecture', title: 'Physio: Digestion', time: '09:10-12:10', instructor: '余佳慧' }, { type: 'lecture', title: 'Anat: Gluteal region', time: '13:20-15:10', instructor: '陳玉伶' }, { type: 'lab', title: 'Histo Lab: Liver, Intestine', time: '15:30-17:20', instructor: '陳玉伶,許書睿' }],
+                '2025-11-28': [{ type: 'lab', title: 'Physio Lab 6', time: '13:20-17:20', instructor: '全體教師' }],
+                '2025-12-01': [{ type: 'lecture', title: 'Anat: Gluteal region', time: '08:10-12:20', instructor: '陳玉伶' }],
+                '2025-12-02': [{ type: 'lecture', title: 'Histo: Kidney', time: '08:10-10:00', instructor: '廖玉琳' }, { type: 'lab', title: 'Histo Lab: Kidney', time: '10:20-12:10', instructor: '全體教師' }, { type: 'lecture', title: 'Anat: Blood vessels of pelvis', time: '13:20-17:20', instructor: '陳玉伶' }],
+                '2025-12-03': [{ type: 'lecture', title: 'Physio: Kidney', time: '09:10-12:10', instructor: '林水龍' }, { type: 'lecture', title: 'Anat: Pelvic viscera', time: '13:20-17:20', instructor: '陳玉伶' }],
+                '2025-12-05': [{ type: 'lab', title: 'Physio Lab 7-1', time: '12:30-17:20', instructor: '全體教師' }],
+                '2025-12-08': [{ type: 'exam', title: 'Histo: Quiz(II)', time: '08:10-08:40', instructor: '全體教師' }, { type: 'lecture', title: 'Anat: Clinical Rectal Cancer', time: '09:10-10:00', instructor: '梁金銅' }, { type: 'lecture', title: 'Embryo: Digestive System', time: '10:20-12:10', instructor: '賴達孺' }],
+                '2025-12-09': [{ type: 'lecture', title: 'Anat: Perineum', time: '08:10-12:20', instructor: '呂俊宏' }, { type: 'lecture', title: 'Anat: Pelvis & Perineum', time: '13:20-17:20', instructor: '呂俊宏' }],
+                '2025-12-10': [{ type: 'lecture', title: 'Physio: Kidney', time: '09:10-12:10', instructor: '林水龍' }, { type: 'lecture', title: 'Anat: Pelvis & Perineum', time: '13:20-15:10', instructor: '呂俊宏' }, { type: 'other', title: 'Anat: LAB REVIEW', time: '15:30-17:20' }],
+                '2025-12-12': [{ type: 'lab', title: 'Physio Lab 7-2', time: '12:30-17:20', instructor: '全體教師' }],
+                '2025-12-15': [{ type: 'exam', title: 'Histology Final Exam', time: '08:10-12:10', instructor: '全體教師' }],
+                '2025-12-16': [{ type: 'exam', title: 'Anatomy Final Exam', time: '08:10-12:10', instructor: '全體教師' }, { type: 'exam', title: 'Embryo: Final Exam', time: '13:30-14:50', instructor: '全體教師' }],
+                '2025-12-19': [{ type: 'exam', title: 'Physio: 正課、實驗期末考', time: '13:20-16:00' }],
             };
 
-            // --- Modal Interactivity ---
+            const months = [
+                { name: '九月 September', index: 8 },
+                { name: '十月 October', index: 9 },
+                { name: '十一月 November', index: 10 },
+                { name: '十二月 December', index: 11 }
+            ];
+            const year = 2025;
+
+            const calendarTitle = document.getElementById('calendar-title');
+            const calendarHeader = document.getElementById('calendar-header');
+            const calendarGrid = document.getElementById('calendar-grid');
+            const prevBtn = document.getElementById('prev-month-btn');
+            const nextBtn = document.getElementById('next-month-btn');
+            const toggleBtn = document.getElementById('toggle-weekends');
             const modal = document.getElementById('event-modal');
             const closeModalBtn = document.getElementById('close-modal');
             const modalTitle = document.getElementById('modal-title');
             const modalContent = document.getElementById('modal-content');
-            
-            const setupModalListeners = () => {
-                const dayCells = document.querySelectorAll('.calendar-grid > div');
-                dayCells.forEach(cell => {
-                    if (cell.querySelector('.event')) {
-                        cell.addEventListener('click', function() {
-                            const dateNum = this.querySelector('.date-number').textContent;
-                            const monthName = this.closest('.calendar-card').querySelector('h2').textContent;
-                            
-                            modalTitle.textContent = `${monthName} - ${dateNum}日`;
-                            modalContent.innerHTML = ''; 
 
-                            const events = this.querySelectorAll('.event');
-                            events.forEach(event => {
-                                const eventClone = event.cloneNode(true);
-                                eventClone.classList.remove('event');
-                                eventClone.classList.add('modal-event'); 
-                                modalContent.appendChild(eventClone);
-                            });
+            let currentMonthIndex = 0;
+            let weekendsVisible = false;
 
-                            modal.classList.remove('hidden');
-                            modal.classList.add('flex');
-                        });
+            function renderCalendar() {
+                const monthInfo = months[currentMonthIndex];
+                calendarTitle.textContent = monthInfo.name;
+                calendarGrid.innerHTML = '';
+                
+                const today = new Date();
+                
+                // --- Render Header ---
+                if (weekendsVisible) {
+                    calendarHeader.innerHTML = '<div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>';
+                    calendarHeader.classList.remove('grid-cols-5');
+                    calendarHeader.classList.add('grid-cols-7');
+                    calendarGrid.classList.remove('grid-cols-5');
+                    calendarGrid.classList.add('grid-cols-7');
+                } else {
+                    calendarHeader.innerHTML = '<div>一</div><div>二</div><div>三</div><div>四</div><div>五</div>';
+                    calendarHeader.classList.remove('grid-cols-7');
+                    calendarHeader.classList.add('grid-cols-5');
+                    calendarGrid.classList.remove('grid-cols-7');
+                    calendarGrid.classList.add('grid-cols-5');
+                }
+
+                // --- Render Grid ---
+                const firstDayOfMonth = new Date(year, monthInfo.index, 1);
+                const daysInMonth = new Date(year, monthInfo.index + 1, 0).getDate();
+
+                // Add padding for the first day
+                let dayOfWeek = firstDayOfMonth.getDay(); // 0=Sun, 1=Mon...
+                let paddingDays = weekendsVisible ? dayOfWeek : (dayOfWeek === 0 ? 0 : dayOfWeek - 1);
+                
+                // If weekends are hidden and the first day is a weekend, we don't add padding
+                if (!weekendsVisible && (dayOfWeek === 0 || dayOfWeek === 6)){
+                    paddingDays = 0;
+                }
+
+                for (let i = 0; i < paddingDays; i++) {
+                    calendarGrid.insertAdjacentHTML('beforeend', '<div class="bg-gray-50 rounded-lg"></div>');
+                }
+
+                // Add days
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const currentDate = new Date(year, monthInfo.index, day);
+                    const currentDayOfWeek = currentDate.getDay();
+
+                    if (!weekendsVisible && (currentDayOfWeek === 0 || currentDayOfWeek === 6)) {
+                        continue;
                     }
+                    
+                    const dateString = `${year}-${String(monthInfo.index + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const dayEvents = eventsData[dateString] || [];
+                    
+                    let eventsHTML = dayEvents.map(event => 
+                        `<div class="event event-${event.type}">
+                            <p class="font-semibold">${event.title}</p>
+                            ${event.time ? `<p class="text-xs">${event.time}${event.instructor ? ' ' + event.instructor : ''}</p>` : ''}
+                        </div>`
+                    ).join('');
+
+                    const isToday = today.getFullYear() === year && today.getMonth() === monthInfo.index && today.getDate() === day;
+                    
+                    const cell = document.createElement('div');
+                    cell.className = 'rounded-lg p-2';
+                    if (dayEvents.length > 0) cell.classList.add('cursor-pointer');
+                    if (isToday) cell.classList.add('today');
+                    
+                    cell.innerHTML = `<span class="date-number">${day}</span>${eventsHTML}`;
+                    
+                    if (dayEvents.length > 0) {
+                        cell.addEventListener('click', () => showModalForDay(day, monthInfo, dayEvents));
+                    }
+                    
+                    calendarGrid.appendChild(cell);
+                }
+
+                // Update nav buttons
+                prevBtn.disabled = currentMonthIndex === 0;
+                nextBtn.disabled = currentMonthIndex === months.length - 1;
+            }
+
+            function showModalForDay(day, monthInfo, dayEvents) {
+                modalTitle.textContent = `${monthInfo.name} - ${day}日`;
+                modalContent.innerHTML = ''; 
+
+                dayEvents.forEach(event => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.className = `modal-event event-${event.type}`;
+                    eventDiv.innerHTML = `<p class="font-semibold">${event.title}</p>
+                                          ${event.time ? `<p class="text-sm">${event.time}${event.instructor ? ' ' + event.instructor : ''}</p>` : ''}`;
+                    modalContent.appendChild(eventDiv);
                 });
-            };
+
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
 
             const closeModal = () => {
                 modal.classList.add('hidden');
@@ -594,66 +357,36 @@
             };
 
             closeModalBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeModal();
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+            // --- Event Listeners ---
+            toggleBtn.addEventListener('click', () => {
+                weekendsVisible = !weekendsVisible;
+                toggleBtn.textContent = weekendsVisible ? '隱藏週末' : '顯示週末';
+                renderCalendar();
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                if (currentMonthIndex > 0) {
+                    currentMonthIndex--;
+                    renderCalendar();
                 }
             });
 
-            // --- Weekend Toggle Interactivity ---
-            const toggleBtn = document.getElementById('toggle-weekends');
-            const calendarContainers = document.querySelectorAll('.calendar-card-container');
-            let weekendsVisible = false;
-
-            const updateCalendarView = () => {
-                calendarContainers.forEach(container => {
-                    const header = container.querySelector('.calendar-header');
-                    const grid = container.querySelector('.calendar-grid');
-                    
-                    if (!header || !grid) return;
-
-                    // Toggle visibility based on weekendsVisible state
-                    header.classList.toggle('grid-cols-7', weekendsVisible);
-                    header.classList.toggle('grid-cols-5', !weekendsVisible);
-                    grid.classList.toggle('grid-cols-7', weekendsVisible);
-                    grid.classList.toggle('grid-cols-5', !weekendsVisible);
-
-                    // Show/Hide Sun/Sat headers
-                    if(header.children.length === 7) {
-                        header.children[0].classList.toggle('hidden', !weekendsVisible); 
-                        header.children[6].classList.toggle('hidden', !weekendsVisible); 
-                    }
-
-                    // Show/Hide Sun/Sat day cells
-                    const days = grid.children;
-                    for (let i = 0; i < days.length; i++) {
-                        // In a 7-day grid, 0 is Sunday, 6 is Saturday
-                        if (i % 7 === 0 || i % 7 === 6) {
-                            days[i].classList.toggle('hidden', !weekendsVisible);
-                        }
-                    }
-                });
-                toggleBtn.textContent = weekendsVisible ? '隱藏週末' : '顯示週末';
-            };
-
-            toggleBtn.addEventListener('click', () => {
-                weekendsVisible = !weekendsVisible;
-                updateCalendarView();
+            nextBtn.addEventListener('click', () => {
+                if (currentMonthIndex < months.length - 1) {
+                    currentMonthIndex++;
+                    renderCalendar();
+                }
             });
 
             // --- Initial Load ---
-            updateCalendarView(); // Initially hide weekends
-            highlightToday();
-            setupModalListeners();
-
-            // --- Initial Scroll to Current Month ---
-            const currentMonthId = monthIds[currentMonth];
-            const currentMonthElement = document.getElementById(currentMonthId);
-            if (currentMonthElement) {
-                setTimeout(() => {
-                    currentMonthElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 150); // Small delay to ensure layout is stable
-            }
+            const today = new Date();
+            const initialMonth = today.getMonth(); // 8 for September
+            const monthToShow = months.findIndex(m => m.index === initialMonth);
+            currentMonthIndex = monthToShow !== -1 ? monthToShow : 0;
+            
+            renderCalendar();
         });
     </script>
 </body>
